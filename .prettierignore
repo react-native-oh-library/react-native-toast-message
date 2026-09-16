@@ -1,0 +1,13 @@
+node_modules/
+lib/
+coverage/
+example/
+docs/
+.github/
+.husky/
+yarn.lock
+package-lock.json
+LICENSE
+.gitignore
+.npmignore
+.eslintignore

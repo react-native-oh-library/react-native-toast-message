@@ -1,7 +1,7 @@
 import React from 'react';
 import { Keyboard, KeyboardEvent } from 'react-native';
 
-import { isIOS } from '../utils/platform';
+import { isHarmony, isIOS } from '../utils/platform';
 
 export function useKeyboard() {
   const [keyboardHeight, setKeyboardHeight] = React.useState(0);
@@ -19,7 +19,7 @@ export function useKeyboard() {
   }, []);
 
   React.useEffect(() => {
-    if (!isIOS()) {
+    if (!isIOS() && !isHarmony()) {
       return () => {};
     }
     const didShowListener = Keyboard.addListener('keyboardDidShow', onShow);

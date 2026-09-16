@@ -1,1 +1,12 @@
+# directories
+node_modules/
+example/
+coverage/
+docs/
+.github/
+.husky/
+
+# files
+npm-debug.log
+.DS_Store
 **/__tests__/*

@@ -4,6 +4,7 @@ import { Animated, Platform } from 'react-native';
 import { ToastAnimationConfig, ToastPosition } from '../types';
 import { additiveInverseArray } from '../utils/array';
 import { resolveAnimationConfig } from '../utils/animationConfig';
+import { isHarmony } from '../utils/platform';
 import { useKeyboard } from './useKeyboard';
 
 type UseSlideAnimationParams = {
@@ -38,10 +39,12 @@ export function translateYOutputRangeFor({
   return outputRange;
 }
 
-const useNativeDriver = Platform.select({
-  ios: true,
-  default: false
-});
+const useNativeDriver = isHarmony()
+  ? false
+  : Platform.select({
+      ios: true,
+      default: false
+    });
 
 export function useSlideAnimation({
   position,
