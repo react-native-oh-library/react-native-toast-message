@@ -1,0 +1,11 @@
+[
+    {
+        "Name": "react-native-toast-message",
+        "License": "MIT License",
+        "License File": "https://github.com/calintamas/react-native-toast-message/blob/master/LICENSE",
+        "Version Number": "2.5.2",
+        "Owner" : "panjinling@huawei.com",
+        "Upstream URL": "https://github.com/calintamas/react-native-toast-message",
+        "Description": "Toast message component for React Native."
+    }
+]

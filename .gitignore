@@ -6,3 +6,4 @@ coverage
 lib
 .yarn
 .yarnrc.yml
+*.tgz

@@ -1,5 +1,7 @@
 import { Platform, StyleSheet, ViewStyle } from 'react-native';
 
+import { isHarmony } from '../utils/platform';
+
 export const HEIGHT = 60;
 export const WIDTH = 340;
 export const BORDER_RADIUS = 6;
@@ -8,22 +10,28 @@ type ShadowStyle =
   | { boxShadow: string }
   | Pick<ViewStyle, 'shadowOffset' | 'shadowOpacity' | 'shadowRadius'>;
 
+const nativeShadowStyle: ShadowStyle = {
+  shadowOffset: { width: 0, height: 0 },
+  shadowOpacity: 0.1,
+  shadowRadius: BORDER_RADIUS
+};
+
+const shadowStyle = isHarmony()
+  ? nativeShadowStyle
+  : Platform.select<ShadowStyle>({
+      web: {
+        boxShadow: `0px 0px ${BORDER_RADIUS}px rgba(0, 0, 0, 0.1)`
+      },
+      default: nativeShadowStyle
+    });
+
 export const styles = StyleSheet.create({
   base: {
     flexDirection: 'row',
     height: HEIGHT,
     width: WIDTH,
     borderRadius: BORDER_RADIUS,
-    ...Platform.select<ShadowStyle>({
-      web: {
-        boxShadow: `0px 0px ${BORDER_RADIUS}px rgba(0, 0, 0, 0.1)`
-      },
-      default: {
-        shadowOffset: { width: 0, height: 0 },
-        shadowOpacity: 0.1,
-        shadowRadius: BORDER_RADIUS
-      }
-    }),
+    ...shadowStyle,
     elevation: 2,
     backgroundColor: '#FFF'
   },
