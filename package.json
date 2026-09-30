@@ -27,7 +27,8 @@
     "build": "rm -rf ./lib && tsc",
     "prettier": "./node_modules/.bin/prettier --write",
     "lint": "./node_modules/.bin/eslint --fix --cache",
-    "test": "./node_modules/.bin/jest",
+    "test": "jest",
+    "test:jest": "jest --config jest/jest.config.js",
     "type-check": "tsc --build --incremental",
     "quality": "yarn type-check && yarn lint && yarn test --coverage"
   },
@@ -48,6 +49,8 @@
     "metro-react-native-babel-preset": "^0.71.0",
     "prettier": "^2.4.1",
     "prettier-plugin-import-sort": "^0.0.7",
+    "react": "17.0.2",
+    "react-native": "0.64.2",
     "react-test-renderer": "^17.0.2",
     "typescript": "^4.4.3"
   },
