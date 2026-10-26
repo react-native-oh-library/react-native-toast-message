@@ -3,19 +3,20 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "i": "cd ../ && npm i && npm run build && npm pack && cd ./example && npm i",
     "reStart": "npm run install:pkg && hdc rport tcp:8081 tcp:8081 && react-native start",
     "start": "hdc rport tcp:8081 tcp:8081 && react-native start",
-    "pack:pkg": "cd ../ && npm pack && cd ./example",
+    "pack:pkg": "cd ../ && npm run build && npm pack && cd ./example",
     "install:pkg": "npm uninstall @react-native-ohos/react-native-toast-message && npm run pack:pkg && npm i @react-native-ohos/react-native-toast-message@file:../react-native-ohos-react-native-toast-message-2.5.3-beta.1.tgz",
     "dev": "react-native bundle-harmony --dev --minify=false",
     "prod": "react-native bundle-harmony --dev=false --minify=true",
-    "postinstall": "node ./scripts/create-build-profile"
+    "postinstall": "node ./scripts/create-build-profile",
+    "fast:pkg": "cd ../ && npm i --legacy-peer-deps && npm run build && npm pack && cd ./example && npm i && npm run dev"
   },
   "dependencies": {
+    "@rnoh/testerino": "npm:@react-native-oh-tpl/testerino@0.0.9",
     "react": "18.3.1",
     "react-native": "0.77.1",
-    "react-native-harmony": "npm:@react-native-oh/react-native-harmony@^0.77.10",
+    "react-native-harmony": "npm:@react-native-oh/react-native-harmony@0.77.73",
     "@react-native-ohos/react-native-toast-message": "file:../react-native-ohos-react-native-toast-message-2.5.3-beta.1.tgz"
   },
   "devDependencies": {
@@ -25,7 +26,7 @@
     "@react-native-community/cli": "15.0.1",
     "@react-native-community/cli-platform-android": "15.0.1",
     "@react-native-community/cli-platform-ios": "15.0.1",
-    "@react-native-oh/react-native-harmony-cli": "^0.0.27",
+    "@react-native-oh/react-native-harmony-cli": "0.77.64",
     "@react-native/babel-preset": "0.77.1",
     "@react-native/metro-config": "^0.77.1",
     "@react-native/typescript-config": "0.77.1",

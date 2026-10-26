@@ -1,57 +1,64 @@
 /**
- * 基础用法 demo — 内置 success / error / info 预设 + 常用 props。
- * 入口：App demo list -> "Toast Basic Usage"
+ * 基础用法用例集 — 内置 success / error / info 预设 + 常用 props。
+ * 参考 rn-tester 用例集结构：TestSuite / TestCase（@rnoh/testerino）。
+ * 入口：App demo list -> "react-native-toast-message "
  */
 import React, {useState} from 'react';
-import {
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableHighlight,
-  View
-} from 'react-native';
+import {Button, StyleSheet, Text, TextInput, View} from 'react-native';
+import {TestSuite, TestCase} from '@rnoh/testerino';
 import Toast, {ToastShowParams} from 'react-native-toast-message';
 
-export default function BasicUsageExample() {
+type ToastType = 'success' | 'error' | 'info';
+
+export default function BasicUsageSuite() {
   const [message, setMessage] = useState('Hello from HarmonyOS');
+  const [callbackLog, setCallbackLog] = useState('—');
+  const [pressLog, setPressLog] = useState('—');
 
   const showToast = (
-    type: 'success' | 'error' | 'info',
+    type: ToastType,
     extra?: Partial<ToastShowParams>
   ) => {
     Toast.show({
       type,
-      text1: message,
+      text1: message.length > 0 ? message : 'Hello from HarmonyOS',
       text2: `type: ${type}`,
       ...extra
     });
   };
 
   return (
-    <ScrollView
-      style={styles.container}
-      contentContainerStyle={styles.content}
-      keyboardShouldPersistTaps="handled">
-      <Text style={styles.sectionTitle}>Toast 文案</Text>
-      <TextInput
-        style={styles.input}
-        value={message}
-        onChangeText={setMessage}
-        placeholder="Input toast text1"
-      />
+    <TestSuite name="toast">
+      <TestCase itShould="TextInput 自定义 text1 文案">
+        <TextInput
+          style={styles.input}
+          value={message}
+          onChangeText={setMessage}
+          placeholder="Input toast text1"
+        />
+      </TestCase>
 
-      <Text style={styles.sectionTitle}>内置预设（顶部）</Text>
-      <View style={styles.row}>
-        <Button label="Success" onPress={() => showToast('success')} />
-        <Button label="Error" onPress={() => showToast('error')} />
-        <Button label="Info" onPress={() => showToast('info')} />
-      </View>
-
-      <Text style={styles.sectionTitle}>位置与偏移</Text>
-      <View style={styles.row}>
+      <TestCase itShould="Toast.show({ type: 'success' })">
         <Button
-          label="Bottom"
+          title="show success"
+          onPress={() => showToast('success')}
+        />
+      </TestCase>
+
+      <TestCase itShould="Toast.show({ type: 'error' })">
+        <Button
+          title="show error"
+          onPress={() => showToast('error')}
+        />
+      </TestCase>
+
+      <TestCase itShould="Toast.show({ type: 'info' })">
+        <Button title="show info" onPress={() => showToast('info')} />
+      </TestCase>
+
+      <TestCase itShould="position: 'bottom' + bottomOffset: 80">
+        <Button
+          title="show bottom"
           onPress={() =>
             showToast('info', {
               position: 'bottom',
@@ -59,117 +66,120 @@ export default function BasicUsageExample() {
             })
           }
         />
+      </TestCase>
+
+      <TestCase itShould="topOffset: 120">
         <Button
-          label="Top offset 120"
+          title="show top offset 120"
           onPress={() => showToast('success', {topOffset: 120})}
         />
-      </View>
+      </TestCase>
 
-      <Text style={styles.sectionTitle}>自动隐藏 / 手动隐藏</Text>
-      <View style={styles.row}>
+      <TestCase itShould="visibilityTime: 1000（1s 后自动隐藏）">
         <Button
-          label="Sticky (autoHide: false)"
+          title="show, auto hide in 1s"
+          onPress={() => showToast('info', {visibilityTime: 1000})}
+        />
+      </TestCase>
+
+      <TestCase itShould="autoHide: false + Toast.hide()">
+        <View style={styles.buttonGroup}>
+          <Button
+            title="show sticky"
+            onPress={() =>
+              showToast('error', {autoHide: false, swipeable: true})
+            }
+          />
+          <Button
+            title="Toast.hide()"
+            onPress={() => Toast.hide()}
+          />
+        </View>
+      </TestCase>
+
+      <TestCase itShould="swipeable: true（手势滑动关闭）">
+        <Button
+          title="show swipeable"
           onPress={() =>
-            showToast('error', {autoHide: false, swipeable: true})
+            showToast('info', {autoHide: false, swipeable: true})
           }
         />
-        <Button label="Toast.hide()" onPress={() => Toast.hide()} />
-      </View>
+      </TestCase>
 
-      <Text style={styles.sectionTitle}>回调</Text>
-      <View style={styles.row}>
+      <TestCase itShould="swipeable: false">
         <Button
-          label="onShow / onHide"
+          title="show swipeable"
+          onPress={() =>
+            showToast('info', {autoHide: false, swipeable: false})
+          }
+        />
+      </TestCase>
+
+      <TestCase itShould="onShow / onHide 回调">
+        <Button
+          title="show with callbacks"
           onPress={() =>
             showToast('success', {
-              onShow: () => console.log('toast onShow'),
-              onHide: () => console.log('toast onHide')
+              onShow: () => setCallbackLog('onShow triggered'),
+              onHide: () => setCallbackLog('onHide triggered')
             })
           }
         />
+        <Text style={styles.log}>callback: {callbackLog}</Text>
+      </TestCase>
+
+      <TestCase itShould="onPress 点击回调">
         <Button
-          label="onPress"
+          title="show pressable toast"
           onPress={() =>
-            showToast('info', {onPress: () => console.log('toast pressed')})
+            showToast('info', {
+              onPress: () => setPressLog('toast pressed')
+            })
           }
         />
-      </View>
+        <Text style={styles.log}>onPress: {pressLog}</Text>
+      </TestCase>
 
-      <Text style={styles.sectionTitle}>键盘避让（先聚焦输入框）</Text>
-      <View style={styles.row}>
+      <TestCase itShould="键盘避让（position: 'bottom' + avoidKeyboard）">
         <Button
-          label="Show above keyboard"
+          title="show above keyboard"
           onPress={() =>
             Toast.show({
               type: 'success',
-              text1: message,
+              text1: message.length > 0 ? message : 'Hello from HarmonyOS',
               position: 'bottom',
               bottomOffset: 40,
               avoidKeyboard: true
             })
           }
         />
-      </View>
-
-      {/* Toast 挂载点：App 根组件渲染一次即可，Toast.show 全局可用 */}
-      <Toast />
-    </ScrollView>
-  );
-}
-
-function Button({
-  label,
-  onPress
-}: {
-  label: string;
-  onPress: () => void;
-}) {
-  return (
-    <TouchableHighlight
-      style={styles.button}
-      underlayColor="#d0d0d0"
-      onPress={onPress}>
-      <Text style={styles.buttonText}>{label}</Text>
-    </TouchableHighlight>
+        <Text style={styles.hint}>
+          先聚焦顶部输入框拉起键盘，再点击按钮，Toast 应显示在键盘上方
+        </Text>
+      </TestCase>
+    </TestSuite>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#f5f5f5'
-  },
-  content: {
-    padding: 16
-  },
-  sectionTitle: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: '#333333',
-    marginTop: 16,
-    marginBottom: 8
-  },
   input: {
-    backgroundColor: '#ffffff',
+    backgroundColor: '#f2f2f7',
     borderRadius: 8,
     paddingHorizontal: 12,
     paddingVertical: 8,
     fontSize: 14
   },
-  row: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
+  buttonGroup: {
     gap: 8
   },
-  button: {
-    backgroundColor: '#eeeeee',
-    borderRadius: 8,
-    paddingHorizontal: 14,
-    paddingVertical: 10,
-    marginBottom: 8
+  log: {
+    fontSize: 12,
+    color: '#3c3c43',
+    marginTop: 6
   },
-  buttonText: {
-    fontSize: 13,
-    color: '#2883d2'
+  hint: {
+    fontSize: 12,
+    color: '#8e8e93',
+    marginTop: 6
   }
 });
