@@ -1,21 +1,17 @@
 /**
- * 自定义 Toast demo — config 注册自定义类型 + animationConfig。
- * 入口：App demo list -> "Custom Toast Config"
+ * 自定义 Toast 用例集 — config 注册自定义类型 + animationConfig。
+ * 参考 rn-tester 用例集结构：TestSuite / TestCase（@rnoh/testerino）。
+ * 入口：App demo list -> "react-native-toast-message "
  */
-import React, {useState} from 'react';
-import {
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableHighlight,
-  View
-} from 'react-native';
+import React from 'react';
+import {Button, StyleSheet, Text, View} from 'react-native';
+import {TestSuite, TestCase} from '@rnoh/testerino';
 import Toast, {BaseToast, ToastConfig} from 'react-native-toast-message';
 
-const toastConfig: ToastConfig = {
+export const customToastConfig: ToastConfig = {
   /*
-    自定义类型 "tomato"：左侧色条 + 标题/正文自定义样式 + 右侧图标。
-    通过 Toast.show({ type: 'tomato' }) 使用。
+    自定义类型 "tomato"：左侧色条 + 标题/正文自定义样式 + 右侧图标徽标。
+    通过 Toast.show({ type: 'tomato', props: { badge } }) 使用。
   */
   tomato: ({text1, text2, onPress, props}) => (
     <BaseToast
@@ -32,109 +28,102 @@ const toastConfig: ToastConfig = {
         </View>
       )}
     />
+  ),
+  /*
+    自定义类型 "plain"：无图标，仅自定义文案样式。
+    通过 Toast.show({ type: 'plain' }) 使用。
+  */
+  plain: ({text1, text2, onPress}) => (
+    <BaseToast
+      style={[styles.toastContainer, {borderLeftColor: '#2c3e50'}]}
+      contentContainerStyle={styles.toastContent}
+      text1={text1}
+      text2={text2}
+      text1Style={styles.plainText1}
+      text2Style={styles.plainText2}
+      onPress={onPress}
+    />
   )
 };
 
-export default function CustomToastExample() {
-  const [useTiming, setUseTiming] = useState(false);
-
+export default function CustomToastSuite() {
   return (
-    <ScrollView
-      style={styles.container}
-      contentContainerStyle={styles.content}>
-      <Text style={styles.sectionTitle}>自定义类型（type: 'tomato'）</Text>
-      <View style={styles.row}>
+    <TestSuite name="custom toast">
+      <TestCase itShould="config 注册自定义类型 type: 'tomato'">
         <Button
-          label="Show custom toast"
+          title="show custom toast"
           onPress={() =>
             Toast.show({
               type: 'tomato',
               text1: 'Custom toast',
-              text2: 'Registered via <Toast config={...} />',
+              text2: "Registered via <Toast config={...} />",
               props: {badge: '🍅'}
             })
           }
         />
-      </View>
+      </TestCase>
 
-      <Text style={styles.sectionTitle}>动画配置 animationConfig</Text>
-      <View style={styles.row}>
+      <TestCase itShould="props 传参自定义图标徽标">
         <Button
-          label={`Anim: ${useTiming ? 'timing' : 'spring'} (tap to switch)`}
-          onPress={() => setUseTiming((v) => !v)}
-        />
-      </View>
-      <View style={styles.row}>
-        <Button
-          label="Show with animationConfig"
+          title="show with props.badge"
           onPress={() =>
             Toast.show({
               type: 'tomato',
-              text1: useTiming ? 'Timing animation' : 'Spring animation',
-              text2: `type: ${useTiming ? 'timing, 300ms' : 'spring, friction 8'}`,
-              props: {badge: useTiming ? '⏱️' : '🌀'},
-              animationConfig: useTiming
-                ? {type: 'timing', duration: 300}
-                : {type: 'spring', friction: 8}
+              text1: 'Props badge',
+              text2: "props: { badge: '⏱️' }",
+              props: {badge: '⏱️'}
             })
           }
         />
-      </View>
+      </TestCase>
 
-      {/* config 注册自定义类型的地方就在这里 */}
-      <Toast config={toastConfig} />
-    </ScrollView>
-  );
-}
+      <TestCase itShould="自定义类型 type: 'plain'（text1Style / text2Style）">
+        <Button
+          title="show plain toast"
+          onPress={() =>
+            Toast.show({
+              type: 'plain',
+              text1: 'Custom text styles',
+              text2: 'text1Style / text2Style'
+            })
+          }
+        />
+      </TestCase>
 
-function Button({
-  label,
-  onPress
-}: {
-  label: string;
-  onPress: () => void;
-}) {
-  return (
-    <TouchableHighlight
-      style={styles.button}
-      underlayColor="#d0d0d0"
-      onPress={onPress}>
-      <Text style={styles.buttonText}>{label}</Text>
-    </TouchableHighlight>
+      <TestCase itShould="animationConfig: { type: 'spring', friction: 8 }">
+        <Button
+          title="show spring animation"
+          onPress={() =>
+            Toast.show({
+              type: 'tomato',
+              text1: 'Spring animation',
+              text2: 'type: spring, friction 8',
+              props: {badge: '🌀'},
+              animationConfig: {type: 'spring', friction: 4, tension: 40}
+            })
+          }
+        />
+      </TestCase>
+
+      <TestCase itShould="animationConfig: { type: 'timing', duration: 300 }">
+        <Button
+          title="show timing animation"
+          onPress={() =>
+            Toast.show({
+              type: 'tomato',
+              text1: 'Timing animation',
+              text2: 'type: timing, 300ms',
+              props: {badge: '⏱️'},
+              animationConfig: {type: 'timing', duration: 300}
+            })
+          }
+        />
+      </TestCase>
+    </TestSuite>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#f5f5f5'
-  },
-  content: {
-    padding: 16
-  },
-  sectionTitle: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: '#333333',
-    marginTop: 16,
-    marginBottom: 8
-  },
-  row: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 8
-  },
-  button: {
-    backgroundColor: '#eeeeee',
-    borderRadius: 8,
-    paddingHorizontal: 14,
-    paddingVertical: 10,
-    marginBottom: 8
-  },
-  buttonText: {
-    fontSize: 13,
-    color: '#2883d2'
-  },
   toastContainer: {
     borderLeftWidth: 6,
     borderRadius: 8
@@ -150,6 +139,15 @@ const styles = StyleSheet.create({
   toastText2: {
     fontSize: 12,
     color: '#7f8c8d'
+  },
+  plainText1: {
+    fontSize: 16,
+    fontWeight: '700',
+    color: '#1a1a1a'
+  },
+  plainText2: {
+    fontSize: 13,
+    color: '#8e8e93'
   },
   iconBadge: {
     justifyContent: 'center',

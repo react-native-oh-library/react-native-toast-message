@@ -182,7 +182,7 @@ const styles = StyleSheet.create({
 | type            | string           | success    | No            | All     | Yes              | toast类型，可选：success, error, info。 |
 | text1           | string           | /          | No            | All     | Yes              | 第一行文本。|
 | text2           | string           | /          | No            | All     | Yes              | 第二行文本。|
-| position        | top or bottom    | top        | No            | All     | Yes              | toast位置，可选 top 或 bottom）|
+| position        | top or bottom    | top        | No            | All     | Yes              | toast位置，可选 top 或 bottom|
 | visibilityTime  | number           | 4000       | No            | All     | Yes              | toast自动隐藏前的显示时长（单位：毫秒），仅在 autoHide 属性设为 true 时生效。   |
 | autoHide        | boolean          | true       | No            | All     | Yes              | 设为 true 时，toast会在 visibilityTime 指定的毫秒数后自动隐藏。  |
 | topOffset       | number           | 40         | No            | All     | Yes              | toast距离屏幕顶部的偏移量（单位：像素），仅当 position 为 top 时生效。|
@@ -201,7 +201,7 @@ const styles = StyleSheet.create({
 |-----------------|------------------|------------|---------------|---------|------------------|------|
 | config            | 	ToastConfig  | /    | No            | All     | Yes              | 自定义Toast类型的布局配置。 |
 | type           | string           | /          | No            | All     | Yes              | toast类型，可选：success, error, info。|
-| position        | top or bottom    | top        | No            | All     | Yes              | toast位置，可选 top 或 bottom）|
+| position        | top or bottom    | top        | No            | All     | Yes              | toast位置，可选 top 或 bottom|
 | visibilityTime  | number           | 4000       | No            | All     | Yes              | toast自动隐藏前的显示时长（单位：毫秒），仅在 autoHide 属性设为 true 时生效。   |
 | autoHide        | boolean          | true       | No            | All     | Yes              | 设为 true 时，toast会在 visibilityTime 指定的毫秒数后自动隐藏。  |
 | swipeable       | boolean           | true         | No            | All     | Yes              | 如果为true，可以滑动Toast以关闭|

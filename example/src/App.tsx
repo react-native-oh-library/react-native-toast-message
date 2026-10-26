@@ -1,10 +1,8 @@
 /**
  * Demo 路由 — react-native-toast-message 鸿蒙 example 注册清单
  *
- * 1. BasicUsageExample — 内置预设：success / error / info、top/bottom 位置、
- *    偏移量、autoHide 与手动 hide、onPress / onShow / onHide 回调、键盘避让。
- * 2. CustomToastExample — 通过 `config` 自定义 Toast 类型、自定义文案样式、
- *    animationConfig（spring / timing）。
+ * ToastDemo —  demo：testerino 用例集（@rnoh/testerino），合并
+ * BasicUsage / CustomToast 两个 TestSuite，单屏单 Toast 挂载。
  */
 import React, {useState} from 'react';
 import {
@@ -14,8 +12,7 @@ import {
   TouchableHighlight,
   View
 } from 'react-native';
-import BasicUsageExample from './BasicUsage';
-import CustomToastExample from './CustomToast';
+import ToastDemo from './ToastDemo';
 
 interface DemoRegistryItem {
   key: string;
@@ -27,20 +24,12 @@ interface DemoRegistryItem {
 
 const demos: DemoRegistryItem[] = [
   {
-    key: 'BasicUsageExample',
+    key: 'ToastDemo',
     category: 'UI',
-    module: () => <BasicUsageExample />,
-    title: 'Toast Basic Usage',
+    module: () => <ToastDemo />,
+    title: 'react-native-toast-message ',
     description:
-      '内置预设：Toast.show({ type: success/error/info })、position top/bottom、topOffset/bottomOffset、autoHide 与 Toast.hide()、onPress/onShow/onHide 回调、TextInput + 键盘避让。'
-  },
-  {
-    key: 'CustomToastExample',
-    category: 'UI',
-    module: () => <CustomToastExample />,
-    title: 'Custom Toast Config',
-    description:
-      '通过 config 注册自定义 Toast 类型（tomatoToast）、自定义 text1Style/text2Style、renderTrailingIcon、animationConfig spring/timing 切换。'
+      'Toast测试用例'
   }
 ];
 
@@ -70,7 +59,7 @@ export default function App() {
     <ScrollView style={styles.container}>
       <Text style={styles.header}>react-native-toast-message</Text>
       <Text style={styles.subHeader}>
-        v2.5.2 · react-native-harmony (RNOH) 0.77
+        v2.5.3-beta.1 · react-native-harmony (RNOH) 0.77
       </Text>
       {demos.map((demo) => (
         <TouchableHighlight
