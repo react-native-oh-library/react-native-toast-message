@@ -45,6 +45,7 @@ struct Index {
             enableNDKTextMeasuring: true,
             enableBackgroundExecutor: false,
             enableCAPIArchitecture: true,
+            arkTsComponentNames: [],
           },
           appKey: "app_name",
           jsBundleProvider: new TraceJSBundleProviderDecorator(

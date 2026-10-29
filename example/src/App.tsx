@@ -58,9 +58,6 @@ export default function App() {
   return (
     <ScrollView style={styles.container}>
       <Text style={styles.header}>react-native-toast-message</Text>
-      <Text style={styles.subHeader}>
-        v2.5.3-beta.1 · react-native-harmony (RNOH) 0.77
-      </Text>
       {demos.map((demo) => (
         <TouchableHighlight
           key={demo.key}
