@@ -6,12 +6,16 @@
   "types": "./lib/index.d.ts",
   "files": [
     "/lib",
-    "READEM.md",
+    "README.md",
     "CHANGELOG.md"
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/calintamas/react-native-toast-message.git"
+    "url": "git+https://github.com/react-native-oh-library/react-native-toast-message"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/",
+    "access": "public"
   },
   "keywords": [
     "react-native",

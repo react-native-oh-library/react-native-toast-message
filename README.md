@@ -10,7 +10,7 @@
 
 | 三方库名称    | 三方库版本（npm地址）    | 发布信息     | 支持RN版本    | Autolink     | 编译API版本     | 社区基线版本    |  源码地址   |
 | ------------ | ------------ | ------------------------------ | ------------- | ------------- |------------------------ | ------------- | ------------- | 
-| @react-native-ohos/react-native-toast-message | [~ 2.5.3](https://www.npmjs.com/package/@react-native-ohos/react-native-toast-message)    | [Gitcode Releases](https://github.com/react-native-oh-library/react-native-toast-message/releases) | 0.84.* / 0.82.* / 0.77.* /0.72.* | 否 | API12+ | 2.5.2 | [main](https://github.com/react-native-oh-library/react-native-toast-message/tree/main) |
+| @react-native-ohos/react-native-toast-message | [~ 2.5.3](https://www.npmjs.com/package/@react-native-ohos/react-native-toast-message)    | [Gitcode Releases](https://github.com/react-native-oh-library/react-native-toast-message/releases) | 0.86.* / 0.84.* / 0.82.* / 0.77.* /0.72.* | 否 | API12+ | 2.5.2 | [main](https://github.com/react-native-oh-library/react-native-toast-message/tree/main) |
 
 ## 简介
 
@@ -39,10 +39,10 @@ yarn add @react-native-ohos/react-native-toast-message
 本文档内容基于以下版本验证通过：
 
 1. RNOH: 0.72.96; SDK: HarmonyOS 6.0.0 Release SDK; IDE: DevEco Studio 6.0.0.858; ROM: 6.0.0.112;
-2. RNOH: 0.72.33; SDK: HarmonyOS NEXT B1; IDE: DevEco Studio: 5.0.3.900; ROM: Next.0.0.71;
-3. RNOH: 0.77.18; SDK: HarmonyOS 6.0.0 Release SDK; IDE: DevEco Studio 6.0.0.858; ROM: 6.0.0.112;
-4. RNOH: 0.82.1; SDK: HarmonyOS 6.0.1 Release SDK; IDE: DevEco Studio 6.0.1 Release; ROM:6.0.0.120 SP7;
-5. RNOH: 0.84.1; SDK: HarmonyOS 6.0.1 Release SDK; IDE: DevEco Studio 6.0.1 Release; ROM:6.0.0.120 SP7;
+2. RNOH: 0.77.18; SDK: HarmonyOS 6.0.0 Release SDK; IDE: DevEco Studio 6.0.0.858; ROM: 6.0.0.112;
+3. RNOH: 0.82.1; SDK: HarmonyOS 6.0.1 Release SDK; IDE: DevEco Studio 6.0.1 Release; ROM:6.0.0.120 SP7;
+4. RNOH: 0.84.1; SDK: HarmonyOS 6.0.1 Release SDK; IDE: DevEco Studio 6.0.1 Release; ROM:6.0.0.120 SP7;
+5. RNOH: 0.86.1; SDK: HarmonyOS 6.0.1 Release SDK; IDE: DevEco Studio 26.0.0 Release; ROM:6.0.0.120 SP7;
 
   
  ## 使用示例
@@ -160,6 +160,47 @@ const styles = StyleSheet.create({
 });
 ```
 
+## 使用说明
+
+**显示Toast**
+
+```js
+import Toast from 'react-native-toast-message'
+
+Toast.show({
+  type: 'info',
+  text1: 'This is an info message'
+});
+```
+
+**动画设置**
+
+```js
+import Toast from 'react-native-toast-message';
+import { Easing } from 'react-native';
+
+// timing animation for both enter and exit
+Toast.show({
+  text1: 'Hello',
+  animationConfig: { type: 'timing', duration: 200 }
+});
+
+// different animations for enter and exit
+Toast.show({
+  text1: 'Hello',
+  animationConfig: {
+    enter: { type: 'timing', duration: 200, easing: Easing.out(Easing.cubic) },
+    exit: { type: 'timing', duration: 400, easing: Easing.in(Easing.cubic) }
+  }
+});
+
+// tune the default spring
+Toast.show({
+  text1: 'Hello',
+  animationConfig: { type: 'spring', friction: 6, tension: 40 }
+});
+```
+
 ## 接口说明
 
 > [!TIP] "Platform"列表示该属性在原三方库上支持的平台。
@@ -177,7 +218,7 @@ const styles = StyleSheet.create({
 
 #### show 的 options
 
-| 名称            | 参数类型          | 默认值     | 必填           | 平台    | HarmonyOS平台支持 | 描述 |
+| 名称            | 参数类型          | 默认值     | 必填           | 平台    | OpenHarmony平台支持 | 描述 |
 |-----------------|------------------|------------|---------------|---------|------------------|------|
 | type            | string           | success    | No            | All     | Yes              | toast类型，可选：success, error, info。 |
 | text1           | string           | /          | No            | All     | Yes              | 第一行文本。|
@@ -188,7 +229,7 @@ const styles = StyleSheet.create({
 | topOffset       | number           | 40         | No            | All     | Yes              | toast距离屏幕顶部的偏移量（单位：像素），仅当 position 为 top 时生效。|
 | bottomOffset    | number           | 40         | No            | All     | Yes              | toast距离屏幕底部的偏移量（单位：像素），仅当 position 为 bottom 时生效。 |
 | keyboardOffset  | number           | 10         | No            | IOS     | Yes              | toast距离键盘的偏移量（单位：像素），仅当 position 为 bottom 且键盘处于显示状态时生效（仅支持 iOS 系统） |
-| onShow          | () => void       | /          | No            | All     | Yes               | toast显示时触发的回调函数。 |
+| onShow          | (params: ToastShowParams) => void       | /          | No            | All     | Yes               | toast显示时触发的回调函数。 |
 | onHide          | () => void       | /          | No            | All     | Yes               |toast隐藏时触发的回调函数 |
 | onPress         | () => void       | /          | No            | All     | Yes               | 点击toast时触发的回调函数。|
 | props           | any              | /          | No            | All     | Yes               | 传递给指定toast类型的任意自定义属性，仅当存在通过 Toast 实例的 config 属性配置的自定义toast类型且该类型使用 props 参数时生效。|
@@ -197,7 +238,7 @@ const styles = StyleSheet.create({
 
 #### Toast的属性
 
-| 名称            | 参数类型          | 默认值     | 必填           | 平台    | HarmonyOS平台支持 | 描述 |
+| 名称            | 参数类型          | 默认值     | 必填           | 平台    | OpenHarmony平台支持 | 描述 |
 |-----------------|------------------|------------|---------------|---------|------------------|------|
 | config            | 	ToastConfig  | /    | No            | All     | Yes              | 自定义Toast类型的布局配置。 |
 | type           | string           | /          | No            | All     | Yes              | toast类型，可选：success, error, info。|
@@ -208,7 +249,7 @@ const styles = StyleSheet.create({
 | topOffset    | number           | 40         | No            | All     | Yes              | toast距离屏幕顶部的偏移量（单位：像素），仅当 position 为 top 时生效。 |
 | bottomOffset  | number           | 40         | No            | All     | Yes              | toast距离屏幕底部的偏移量（单位：像素），仅当 position 为 bottom 时生效。 |
 | keyboardOffset  | number           | 10         | No            | IOS     | Yes              | toast距离键盘的偏移量（单位：像素），仅当 position 为 bottom 且键盘处于显示状态时生效（仅支持 iOS 系统） |
-| onShow          | () => void       | /          | No            | All     | Yes               | toast显示时触发的回调函数。 |
+| onShow          | (params: ToastShowParams) => void       | /          | No            | All     | Yes               | toast显示时触发的回调函数。 |
 | onHide          | () => void       | /          | No            | All     | Yes               |toast隐藏时触发的回调函数 |
 | onPress         | () => void       | /          | No            | All     | Yes               | 点击toast时触发的回调函数。|
 | animationConfig | ToastAnimationConfig | { type: 'spring', friction: 8 }   | No   | All     | Yes       | 配置toast的入场/退场动画。|

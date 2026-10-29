@@ -10,7 +10,7 @@ The version correspondence details are as follows:
 
 | Name | Version(Npm Address) | Release Information | Supported RN Version | Supported Autolink | Compile API Version | Community Baseline Version | Source code address |
 | --------------| -------------- | ------------------------------ | ------------- | ------------- |------------------------ | ------------ | ------------- |
-| @react-native-ohos/react-native-toast-message | [~ 2.5.3](https://www.npmjs.com/package/@react-native-ohos/react-native-toast-message) | [Gitcode Releases](https://github.com/react-native-oh-library/react-native-toast-message/releases) | 0.84.* / 0.82.* / 0.77.* / 0.72.* | No | API12+ | 2.5.2 | [main](https://github.com/react-native-oh-library/react-native-toast-message/tree/main) |
+| @react-native-ohos/react-native-toast-message | [~ 2.5.3](https://www.npmjs.com/package/@react-native-ohos/react-native-toast-message) | [Gitcode Releases](https://github.com/react-native-oh-library/react-native-toast-message/releases) |0.86.* / 0.84.* / 0.82.* / 0.77.* / 0.72.* | No | API12+ | 2.5.2 | [main](https://github.com/react-native-oh-library/react-native-toast-message/tree/main) |
 
 ## Introduction
 
@@ -39,10 +39,10 @@ yarn add @react-native-ohos/react-native-toast-message
 This document is verified based on the following versions:
 
 1. RNOH: 0.72.96; SDK: HarmonyOS 6.0.0 Release SDK; IDE: DevEco Studio 6.0.0.858; ROM: 6.0.0.112;
-2. RNOH: 0.72.33; SDK: HarmonyOS NEXT B1; IDE: DevEco Studio: 5.0.3.900; ROM: Next.0.0.71;
-3. RNOH: 0.77.18; SDK: HarmonyOS 6.0.0 Release SDK; IDE: DevEco Studio 6.0.0.858; ROM: 6.0.0.112;
-4. RNOH: 0.82.1; SDK: HarmonyOS 6.0.1 Release SDK; IDE: DevEco Studio 6.0.1 Release; ROM:6.0.0.120 SP7;
-5. RNOH: 0.84.1; SDK: HarmonyOS 6.0.1 Release SDK; IDE: DevEco Studio 6.0.1 Release; ROM:6.0.0.120 SP7;
+2. RNOH: 0.77.18; SDK: HarmonyOS 6.0.0 Release SDK; IDE: DevEco Studio 6.0.0.858; ROM: 6.0.0.112;
+3. RNOH: 0.82.1; SDK: HarmonyOS 6.0.1 Release SDK; IDE: DevEco Studio 6.0.1 Release; ROM:6.0.0.120 SP7;
+4. RNOH: 0.84.1; SDK: HarmonyOS 6.0.1 Release SDK; IDE: DevEco Studio 6.0.1 Release; ROM:6.0.0.120 SP7;
+5. RNOH: 0.86.1; SDK: HarmonyOS 6.0.1 Release SDK; IDE: DevEco Studio 26.0.0 Release; ROM:6.0.0.120 SP7;
 
 
 ## Example
@@ -161,11 +161,53 @@ const styles = StyleSheet.create({
 });
 ```
 
+## How to Use
+
+**Show Toast**
+
+```js
+import Toast from 'react-native-toast-message'
+
+Toast.show({
+  type: 'info',
+  text1: 'This is an info message'
+});
+```
+
+**Animation config**
+
+```js
+import Toast from 'react-native-toast-message';
+import { Easing } from 'react-native';
+
+// timing animation for both enter and exit
+Toast.show({
+  text1: 'Hello',
+  animationConfig: { type: 'timing', duration: 200 }
+});
+
+// different animations for enter and exit
+Toast.show({
+  text1: 'Hello',
+  animationConfig: {
+    enter: { type: 'timing', duration: 200, easing: Easing.out(Easing.cubic) },
+    exit: { type: 'timing', duration: 400, easing: Easing.in(Easing.cubic) }
+  }
+});
+
+// tune the default spring
+Toast.show({
+  text1: 'Hello',
+  animationConfig: { type: 'spring', friction: 6, tension: 40 }
+});
+```
+
+
 ## Available APIs
 
 > [!TIP] The **Platform** column indicates the platform where the properties are supported in the original third-party library.
 
-> [!TIP] If the value of **HarmonyOS Support** is **yes**, it means that the OpenHarmony platform supports this property; **no** means the opposite; **partially** means some capabilities of this property are supported. The usage method is the same on different platforms and the effect is the same as that of iOS or Android.
+> [!TIP] If the value of **OpenHarmony Support** is **yes**, it means that the OpenHarmony platform supports this property; **no** means the opposite; **partially** means some capabilities of this property are supported. The usage method is the same on different platforms and the effect is the same as that of iOS or Android.
 
 ### API
 | Name   | Type | Parameter Type | Return Value | Required | Platform | OpenHarmony Platform Support | Description |
@@ -178,7 +220,7 @@ const styles = StyleSheet.create({
 
 #### Options of show
 
-| Name            | Parameter Type          | Default Value     | Required           | Platform    | HarmonyOS Support | Description |
+| Name            | Parameter Type          | Default Value     | Required           | Platform    | OpenHarmony Support | Description |
 |-----------------|------------------|------------|---------------|---------|------------------|------|
 | type            | string           | success    | No            | All     | Yes              | Toast type. Options: success, error, info. |
 | text1           | string           | /          | No            | All     | Yes              | The first line of text.|
@@ -189,7 +231,7 @@ const styles = StyleSheet.create({
 | topOffset       | number           | 40         | No            | All     | Yes              | The offset (in pixels) between the toast and the top of the screen. Takes effect only when position is top.|
 | bottomOffset    | number           | 40         | No            | All     | Yes              | The offset (in pixels) between the toast and the bottom of the screen. Takes effect only when position is bottom. |
 | keyboardOffset  | number           | 10         | No            | iOS     | Yes              | The offset (in pixels) between the toast and the keyboard. Takes effect only when position is bottom and the keyboard is visible (iOS only). |
-| onShow          | () => void       | /          | No            | All     | Yes               | Callback function fired when the toast is shown. |
+| onShow          | (params: ToastShowParams) => void       | /          | No            | All     | Yes               | Callback function fired when the toast is shown. |
 | onHide          | () => void       | /          | No            | All     | Yes               | Callback function fired when the toast is hidden. |
 | onPress         | () => void       | /          | No            | All     | Yes               | Callback function fired when the toast is pressed.|
 | props           | any              | /          | No            | All     | Yes               | Any custom props passed to the specified toast type. Takes effect only when a custom toast type is configured via the config property of the Toast instance and that type uses the props parameter.|
@@ -198,7 +240,7 @@ const styles = StyleSheet.create({
 
 #### Props of Toast
 
-| Name            | Parameter Type          | Default Value     | Required           | Platform    | HarmonyOS Support | Description |
+| Name            | Parameter Type          | Default Value     | Required           | Platform    | OpenHarmony Support | Description |
 |-----------------|------------------|------------|---------------|---------|------------------|------|
 | config            | 	ToastConfig  | /    | No            | All     | Yes              | Layout configuration for custom toast types. |
 | type           | string           | /          | No            | All     | Yes              | Toast type. Options: success, error, info.|
@@ -209,7 +251,7 @@ const styles = StyleSheet.create({
 | topOffset    | number           | 40         | No            | All     | Yes              | The offset (in pixels) between the toast and the top of the screen. Takes effect only when position is top. |
 | bottomOffset  | number           | 40         | No            | All     | Yes              | The offset (in pixels) between the toast and the bottom of the screen. Takes effect only when position is bottom. |
 | keyboardOffset  | number           | 10         | No            | iOS     | Yes              | The offset (in pixels) between the toast and the keyboard. Takes effect only when position is bottom and the keyboard is visible (iOS only). |
-| onShow          | () => void       | /          | No            | All     | Yes               | Callback function fired when the toast is shown. |
+| onShow          | (params: ToastShowParams) => void       | /          | No            | All     | Yes               | Callback function fired when the toast is shown. |
 | onHide          | () => void       | /          | No            | All     | Yes               | Callback function fired when the toast is hidden. |
 | onPress         | () => void       | /          | No            | All     | Yes               | Callback function fired when the toast is pressed.|
 | animationConfig | ToastAnimationConfig | { type: 'spring', friction: 8 }   | No   | All     | Yes       | Configures the enter/exit animation of the toast.|
